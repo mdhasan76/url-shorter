@@ -20,7 +20,7 @@ const collectionName = "watchlist"
 
 var collection *mongo.Collection
 
-func Server() {
+func ServerMainFn() {
 	clientOption := options.Client().ApplyURI(connectionString)
 
 	// connection to mongodb
@@ -82,47 +82,47 @@ func Server() {
 // 	return urlDataLists
 // }
 
-// func getAllDocuments() []primitive.M {
-// 	cursor, err := collection.Find(context.Background(), bson.M{})
-// 	if err != nil {
-// 		log.Println("Got error on find document", err)
-// 	}
-// 	var allDocuments []primitive.M
-// 	for cursor.Next(context.Background()) {
-// 		var urlData bson.M
-// 		err := cursor.Decode(&urlData)
-// 		if err != nil {
-// 			log.Fatal(err)
-// 		}
-// 		allDocuments = append(allDocuments, urlData)
-// 	}
-// 	defer cursor.Close(context.Background())
-// 	return allDocuments
-// }
-
-func getAllMovies() []primitive.M {
-	cur, err := collection.Find(context.Background(), bson.M{})
+func getAllDocuments() []primitive.M {
+	cursor, err := collection.Find(context.Background(), bson.M{})
 	if err != nil {
-		log.Fatal(err)
+		log.Println("Got error on find document", err)
 	}
-
-	var movies []primitive.M
-	for cur.Next(context.Background()) {
-		var movie bson.M
-		err := cur.Decode(&movie)
+	var allDocuments []primitive.M
+	for cursor.Next(context.Background()) {
+		var urlData bson.M
+		err := cursor.Decode(&urlData)
 		if err != nil {
 			log.Fatal(err)
 		}
-		movies = append(movies, movie)
+		allDocuments = append(allDocuments, urlData)
 	}
-	defer cur.Close(context.Background())
-	return movies
+	defer cursor.Close(context.Background())
+	return allDocuments
 }
+
+// func getAllMovies() []primitive.M {
+// 	cur, err := collection.Find(context.Background(), bson.M{})
+// 	if err != nil {
+// 		log.Fatal(err)
+// 	}
+
+// 	var movies []primitive.M
+// 	for cur.Next(context.Background()) {
+// 		var movie bson.M
+// 		err := cur.Decode(&movie)
+// 		if err != nil {
+// 			log.Fatal(err)
+// 		}
+// 		movies = append(movies, movie)
+// 	}
+// 	defer cur.Close(context.Background())
+// 	return movies
+// }
 
 func GetAllDocuments(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
-	result := getAllMovies()
-	fmt.Println(result, "here is the result")
-	jsonData := map[string]string{"name": "Hasan Mia", "email": "mdhasan76@gmail.com"}
-	json.NewEncoder(w).Encode(jsonData)
+	result := getAllDocuments()
+	// fmt.Println(result, "here is the result")
+	// jsonData := map[string]string{"name": "Hasan Mia", "email": "mdhasan76@gmail.com"}
+	json.NewEncoder(w).Encode(result)
 }
