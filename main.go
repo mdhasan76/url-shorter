@@ -13,7 +13,6 @@ func main() {
 
 	fmt.Println("Hey server is running...")
 	fmt.Println("Listening server is on 4001 port")
-	err := http.ListenAndServe(":4001", r)
-	fmt.Println(err, "this is err")
-	log.Fatal()
+	log.Fatal(http.ListenAndServe(":4001", r))
+	// log.Fatal()
 }

@@ -3,7 +3,7 @@ package route
 import (
 	"fmt"
 	"net/http"
-	"url-shorter/server"
+	"url-shorter/controller"
 
 	"github.com/gorilla/mux"
 )
@@ -15,6 +15,6 @@ func Route() *mux.Router {
 	r.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		w.Write([]byte("Server is running on port 4001"))
 	})
-	r.HandleFunc("/api/allUrl", server.GetAllDocuments).Methods("GET")
+	r.HandleFunc("/api/allUrl", controller.GetAllDocuments).Methods("GET")
 	return r
 }
